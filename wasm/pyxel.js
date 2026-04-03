@@ -107,7 +107,7 @@ document.addEventListener(
 // Public API
 // ---------------------------------------------------------------------------
 
-const launchPyxel = async (params) => {
+async function launchPyxel(params) {
   const pyxelVersion = PYXEL_WHEEL_PATH.match(/pyxel-([\d.]+)-/)[1];
   const pyodideVersion = PYODIDE_URL.match(/v([\d.]+)\//)[1];
   console.log(`Launch Pyxel ${pyxelVersion} with Pyodide ${pyodideVersion}`);
@@ -134,9 +134,9 @@ const launchPyxel = async (params) => {
   } catch (error) {
     _displayFatalErrorOverlay(error);
   }
-};
+}
 
-const resetPyxel = async () => {
+async function resetPyxel() {
   if (!window.pyxelContext.initialized) {
     return;
   }
@@ -213,9 +213,9 @@ const resetPyxel = async () => {
   } catch (error) {
     _displayFatalErrorOverlay(error);
   }
-};
+}
 
-const dropFileToPyxel = (name, data) => {
+function dropFileToPyxel(name, data) {
   if (!window.pyxelContext.initialized) {
     return;
   }
@@ -225,7 +225,7 @@ const dropFileToPyxel = (name, data) => {
   pyodide.runPython(
     `import pyxel; pyxel._dropped_files = getattr(pyxel, '_dropped_files', []) + ['${path}']`
   );
-};
+}
 
 // ---------------------------------------------------------------------------
 // Initialization
