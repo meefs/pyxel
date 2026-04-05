@@ -3,6 +3,7 @@
 ## 2.9.0
 
 - Changed transp, instr, and seed of the gen_bgm function to required
+- Added Cargo.lock to version control for reproducible builds
 
 ## 2.8.10
 
