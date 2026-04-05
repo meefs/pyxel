@@ -832,16 +832,16 @@ Get the sound playback position of channel ch (0-3) as a tuple of (sound_no, sec
 
 **Returns:** `tuple[int, float]/None` — (sound_index, sec) or None
 
-### `gen_bgm(preset, transp=None, instr=None, seed=None, play=False)` — function
+### `gen_bgm(preset, transp, instr, seed, play=False)` — function
 
 Generate a BGM MML list using an algorithm. preset (0-7) selects the preset, instr (0-3) selects the instrumentation.
 
 **Parameters:**
 
 - `preset` (*int*) — Preset number (0-7). 0-1: title, departure (medium tempo), 2-3: town, peaceful (slow tempo), 4-5: field, adventure (medium tempo), 6-7: battle, crisis (fast tempo)
-- `transp` (*int*) — Transpose in semitones (-5 to +5). Overrides the preset value.
-- `instr` (*int*) — Instrumentation (0-3). 0: melody+reverb+bass (3ch), 1: melody+bass+drums (3ch), 2: melody+sub+bass (3ch), 3: melody+sub+bass+drums (4ch). Overrides the preset value.
-- `seed` (*int*) — Random seed (omit for random)
+- `transp` (*int*) — Transpose in semitones (-5 to +5).
+- `instr` (*int*) — Instrumentation (0-3). 0: melody+reverb+bass (3ch), 1: melody+bass+drums (3ch), 2: melody+sub+bass (3ch), 3: melody+sub+bass+drums (4ch).
+- `seed` (*int*) — Random seed
 - `play` (*bool*) — Play the generated MML. Defaults to False.
 
 **Returns:** `list[str]` — List of MML strings

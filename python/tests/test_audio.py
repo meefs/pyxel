@@ -102,51 +102,45 @@ class TestPlayPos:
 
 
 class TestGenBgm:
-    def test_preset_defaults(self):
-        result = pyxel.gen_bgm(0, seed=42)
+    def test_basic(self):
+        result = pyxel.gen_bgm(0, 0, 3, 42)
         assert isinstance(result, list)
         assert len(result) == 4
         assert all(isinstance(s, str) for s in result)
         assert len(result[0]) > 0
 
     def test_seed_reproducible(self):
-        result1 = pyxel.gen_bgm(0, seed=42)
-        result2 = pyxel.gen_bgm(0, seed=42)
+        result1 = pyxel.gen_bgm(0, 0, 3, 42)
+        result2 = pyxel.gen_bgm(0, 0, 3, 42)
         assert result1 == result2
 
     def test_different_seeds_differ(self):
-        result1 = pyxel.gen_bgm(0, seed=1)
-        result2 = pyxel.gen_bgm(0, seed=2)
+        result1 = pyxel.gen_bgm(0, 0, 3, 1)
+        result2 = pyxel.gen_bgm(0, 0, 3, 2)
         assert result1 != result2
 
     def test_all_presets(self):
         for preset in range(8):
-            result = pyxel.gen_bgm(preset, seed=1)
+            result = pyxel.gen_bgm(preset, 0, 0, 1)
             assert isinstance(result, list)
             assert len(result) == 4
 
-    def test_instr_override(self):
+    def test_all_instrumentations(self):
         for instr in range(4):
-            result = pyxel.gen_bgm(0, instr=instr, seed=1)
+            result = pyxel.gen_bgm(0, 0, instr, 1)
             assert isinstance(result, list)
             assert len(result) == 4
-
-    def test_instr_none_uses_preset_default(self):
-        # Preset 0 has default instrumentation=3, so None differs from instr=0
-        result_default = pyxel.gen_bgm(0, seed=42)
-        result_instr0 = pyxel.gen_bgm(0, instr=0, seed=42)
-        assert result_default != result_instr0
 
     def test_transpose_changes_output(self):
-        result_default = pyxel.gen_bgm(0, seed=42)
-        result_transposed = pyxel.gen_bgm(0, transp=3, seed=42)
+        result_default = pyxel.gen_bgm(0, 0, 3, 42)
+        result_transposed = pyxel.gen_bgm(0, 3, 3, 42)
         assert result_default != result_transposed
 
     def test_transp_and_instr_combined(self):
-        result_default = pyxel.gen_bgm(0, seed=42)
-        result_combined = pyxel.gen_bgm(0, transp=3, instr=0, seed=42)
+        result_default = pyxel.gen_bgm(0, 0, 3, 42)
+        result_combined = pyxel.gen_bgm(0, 3, 0, 42)
         assert result_default != result_combined
 
     def test_play_and_stop(self):
-        pyxel.gen_bgm(0, seed=1, play=True)
+        pyxel.gen_bgm(0, 0, 3, 1, play=True)
         pyxel.stop()
