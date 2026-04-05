@@ -107,14 +107,8 @@ fn play_pos(ch: u32) -> PyResult<Option<(u32, f32)>> {
 }
 
 #[pyfunction]
-#[pyo3(signature = (preset, transp=None, instr=None, seed=None, play=None))]
-fn gen_bgm(
-    preset: i32,
-    transp: Option<i32>,
-    instr: Option<i32>,
-    seed: Option<u64>,
-    play: Option<bool>,
-) -> Vec<String> {
+#[pyo3(signature = (preset, transp, instr, seed, play=None))]
+fn gen_bgm(preset: i32, transp: i32, instr: i32, seed: u64, play: Option<bool>) -> Vec<String> {
     pyxel().gen_bgm(preset, transp, instr, seed, play)
 }
 

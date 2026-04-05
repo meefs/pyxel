@@ -728,10 +728,6 @@ fn format_tokens(tokens: &[String]) -> String {
     out.trim().to_string()
 }
 
-fn random_seed() -> u64 {
-    rand::rng().random()
-}
-
 fn parse_notes_bits(s: &str) -> [i32; 12] {
     let mut out = [0; 12];
     for (i, ch) in s.bytes().take(12).enumerate() {
@@ -1723,17 +1719,13 @@ fn silent_channel_mml(tempo: i32) -> String {
 // Generate BGM as MML strings (one-shot: preset → MML)
 pub fn generate_bgm_mml(
     preset: i32,
-    transpose: Option<i32>,
-    instrumentation: Option<i32>,
-    seed: Option<u64>,
+    transpose: i32,
+    instrumentation: i32,
+    seed: u64,
 ) -> Vec<String> {
     let mut params = preset_params(preset);
-    if let Some(t) = transpose {
-        params.transpose = t;
-    }
-    if let Some(i) = instrumentation {
-        params.instrumentation = i;
-    }
+    params.transpose = transpose;
+    params.instrumentation = instrumentation;
     let data = generate_bgm(&params, seed);
     compile_to_mml(&data)
 }
@@ -1745,7 +1737,7 @@ pub fn preset_params_json(preset: i32) -> String {
 }
 
 #[cfg(not(pyxel_core))]
-pub fn generate_bgm_json(params_json: &str, seed: Option<u64>) -> String {
+pub fn generate_bgm_json(params_json: &str, seed: u64) -> String {
     let params = GeneratorParams::from_json(params_json);
     generate_bgm(&params, seed).to_json()
 }
@@ -1811,7 +1803,7 @@ fn build_tone(idx: usize) -> Tone {
     }
 }
 
-fn generate_bgm(params: &GeneratorParams, seed: Option<u64>) -> BgmData {
+fn generate_bgm(params: &GeneratorParams, seed: u64) -> BgmData {
     let instr = params.instrumentation.clamp(0, 3) as usize;
     let key_shift = params.transpose;
     let speed = params.speed.max(1);
@@ -1821,8 +1813,7 @@ fn generate_bgm(params: &GeneratorParams, seed: Option<u64>) -> BgmData {
     let use_16th = params.melo_use16;
     let lowest = params.melo_lowest_note;
 
-    let actual_seed = seed.unwrap_or_else(random_seed);
-    let mut rng = Xoshiro256StarStar::seed_from_u64(actual_seed);
+    let mut rng = Xoshiro256StarStar::seed_from_u64(seed);
 
     let bits_per_step = chord_bits_per_step(chord);
     let bass = generate_bass(params.base, &bits_per_step, key_shift);
@@ -1956,9 +1947,9 @@ impl Pyxel {
     pub fn gen_bgm(
         &mut self,
         preset: i32,
-        transpose: Option<i32>,
-        instrumentation: Option<i32>,
-        seed: Option<u64>,
+        transpose: i32,
+        instrumentation: i32,
+        seed: u64,
         play: Option<bool>,
     ) -> Vec<String> {
         let mml_list = generate_bgm_mml(preset, transpose, instrumentation, seed);
@@ -2016,8 +2007,7 @@ mod tests {
     fn test_generate_bgm_mml_all_presets() {
         // Verify generate_bgm_mml() produces valid MML for all presets
         for preset_idx in 0..PRESET_COUNT as i32 {
-            let seed = Some(12345u64);
-            let mml = generate_bgm_mml(preset_idx, None, None, seed);
+            let mml = generate_bgm_mml(preset_idx, 0, 0, 12345);
             assert_eq!(
                 mml.len(),
                 4,
@@ -2034,11 +2024,11 @@ mod tests {
 
     #[test]
     fn test_generate_bgm_mml_with_overrides() {
-        let mml_default = generate_bgm_mml(0, None, None, Some(42));
-        let mml_transposed = generate_bgm_mml(0, Some(3), None, Some(42));
+        let mml_default = generate_bgm_mml(0, 0, 3, 42);
+        let mml_transposed = generate_bgm_mml(0, 3, 3, 42);
         assert_ne!(mml_default, mml_transposed, "transpose should change MML");
 
-        let mml_instr = generate_bgm_mml(0, None, Some(0), Some(42));
+        let mml_instr = generate_bgm_mml(0, 0, 0, 42);
         assert_ne!(
             mml_default, mml_instr,
             "instrumentation override should change MML"
@@ -2049,10 +2039,10 @@ mod tests {
     fn test_generate_bgm_mml_matches_pipeline() {
         // One-shot and pipeline should produce identical MML
         for preset_idx in 0..PRESET_COUNT as i32 {
-            let seed = Some(12345u64);
-            let one_shot = generate_bgm_mml(preset_idx, None, None, seed);
             let params = preset_params(preset_idx);
-            let data = generate_bgm(&params, seed);
+            let one_shot =
+                generate_bgm_mml(preset_idx, params.transpose, params.instrumentation, 12345);
+            let data = generate_bgm(&params, 12345);
             let pipeline = compile_to_mml(&data);
             assert_eq!(one_shot, pipeline, "mismatch for preset {preset_idx}");
         }
@@ -2097,10 +2087,10 @@ mod tests {
     #[test]
     fn test_json_pipeline_matches_direct() {
         let params_json = preset_params_json(0);
-        let bgm_json = generate_bgm_json(&params_json, Some(42));
+        let bgm_json = generate_bgm_json(&params_json, 42);
         let mml_json = compile_to_mml_json(&bgm_json);
         let mml_from_json: Vec<String> = serde_json::from_str(&mml_json).unwrap();
-        let mml_direct = generate_bgm_mml(0, None, None, Some(42));
+        let mml_direct = generate_bgm_mml(0, 0, 3, 42);
         assert_eq!(mml_from_json, mml_direct);
     }
 }
