@@ -6420,7 +6420,7 @@
         {
           "name": "gen_bgm",
           "type": "function",
-          "signature": "gen_bgm(preset, instr, seed=None, play=False)",
+          "signature": "gen_bgm(preset, transp=None, instr=None, seed=None, play=False)",
           "description": {
             "en": "Generate a BGM MML list using an algorithm. preset (0-7) selects the preset, instr (0-3) selects the instrumentation.",
             "cn": "使用算法生成BGM的MML列表。preset (0-7) 选择预设，instr (0-3) 选择编曲。",
@@ -6455,10 +6455,30 @@
               }
             },
             {
+              "name": "transp",
+              "type": "int",
+              "default": "None",
+              "desc": {
+                "en": "Transpose in semitones (-5 to +5). Overrides the preset value.",
+                "cn": "移调半音数 (-5 到 +5)。覆盖预设值。",
+                "de": "Transposition in Halbtönen (-5 bis +5). Überschreibt den Presetwert.",
+                "es": "Transposición en semitonos (-5 a +5). Anula el valor del preset.",
+                "fr": "Transposition en demi-tons (-5 à +5). Remplace la valeur du preset.",
+                "it": "Trasposizione in semitoni (da -5 a +5). Sovrascrive il valore del preset.",
+                "ja": "移調の半音数 (-5〜+5)。プリセット値を上書きする。",
+                "ko": "반음 단위의 이조 (-5~+5). 프리셋 값을 덮어쓴다.",
+                "pt": "Transposição em semitons (-5 a +5). Substitui o valor do preset.",
+                "ru": "Транспонирование в полутонах (от -5 до +5). Переопределяет значение пресета.",
+                "tr": "Yarım ton cinsinden transpozisyon (-5 ile +5). Preset değerini geçersiz kılar.",
+                "uk": "Транспонування в півтонах (від -5 до +5). Перевизначає значення пресету."
+              }
+            },
+            {
               "name": "instr",
               "type": "int",
+              "default": "None",
               "desc": {
-                "en": "Instrumentation (0-3). 0: melody+reverb+bass (3ch), 1: melody+bass+drums (3ch), 2: melody+sub+bass (3ch), 3: melody+sub+bass+drums (4ch)",
+                "en": "Instrumentation (0-3). 0: melody+reverb+bass (3ch), 1: melody+bass+drums (3ch), 2: melody+sub+bass (3ch), 3: melody+sub+bass+drums (4ch). Overrides the preset value.",
                 "cn": "编制 (0-3). 0: 旋律+混响+贝斯 (3ch), 1: 旋律+贝斯+鼓 (3ch), 2: 旋律+副旋律+贝斯 (3ch), 3: 旋律+副旋律+贝斯+鼓 (4ch)",
                 "de": "Besetzung (0-3). 0: Melodie+Reverb+Bass (3ch), 1: Melodie+Bass+Drums (3ch), 2: Melodie+Sub+Bass (3ch), 3: Melodie+Sub+Bass+Drums (4ch)",
                 "es": "Instrumentación (0-3). 0: melodía+reverb+bajo (3ch), 1: melodía+bajo+batería (3ch), 2: melodía+sub+bajo (3ch), 3: melodía+sub+bajo+batería (4ch)",

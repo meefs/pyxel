@@ -2063,7 +2063,8 @@ def play_pos(ch: int) -> Optional[Tuple[int, float]]:
 
 def gen_bgm(
     preset: int,
-    instr: int,
+    transp: Optional[int] = None,
+    instr: Optional[int] = None,
     seed: Optional[int] = None,
     play: bool = False,
 ) -> List[str]:
@@ -2071,7 +2072,8 @@ def gen_bgm(
 
     Args:
         preset: Preset number (0-7). 0-1: title, departure (medium tempo), 2-3: town, peaceful (slow tempo), 4-5: field, adventure (medium tempo), 6-7: battle, crisis (fast tempo)
-        instr: Instrumentation (0-3). 0: melody+reverb+bass (3ch), 1: melody+bass+drums (3ch), 2: melody+sub+bass (3ch), 3: melody+sub+bass+drums (4ch)
+        transp: Transpose in semitones (-5 to +5). Overrides the preset value.
+        instr: Instrumentation (0-3). 0: melody+reverb+bass (3ch), 1: melody+bass+drums (3ch), 2: melody+sub+bass (3ch), 3: melody+sub+bass+drums (4ch). Overrides the preset value.
         seed: Random seed (omit for random)
         play: Play the generated MML. Defaults to False.
 

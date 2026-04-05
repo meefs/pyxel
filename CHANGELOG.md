@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.9.0
+
+- Redesigned gen_bgm for Pyxel Composer integration
+- Added transpose parameter to gen_bgm
+
 ## 2.8.10
 
 - Fixed WASM public API functions lost by const refactor

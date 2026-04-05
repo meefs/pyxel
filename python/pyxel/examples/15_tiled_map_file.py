@@ -50,12 +50,13 @@ class App:
 
             # gen_bgm generates a list of MML strings.
             # Normally, assign them to sounds:
-            #     mml_list = pyxel.gen_bgm(preset, instr)
+            #     mml_list = pyxel.gen_bgm(preset, transp=transp, instr=instr)
             #     pyxel.sounds[0].mml(mml_list[0])
             # But here, play=True is used for quick playback.
             preset = pyxel.rndi(0, 7)
+            transp = pyxel.rndi(-5, 5)
             instr = pyxel.rndi(0, 3)
-            pyxel.gen_bgm(preset, instr, play=True)
+            pyxel.gen_bgm(preset, transp=transp, instr=instr, play=True)
 
         # Update player
         x, y, u, v = self.player
