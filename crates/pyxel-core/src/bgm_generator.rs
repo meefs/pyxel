@@ -8,7 +8,9 @@ use rand::{RngExt, SeedableRng};
 use rand_xoshiro::Xoshiro256StarStar;
 use serde::{Deserialize, Serialize};
 
+#[cfg(pyxel_core)]
 use crate::pyxel::{self, Pyxel};
+#[cfg(pyxel_core)]
 use crate::sound::Sound;
 
 // Generation parameters — field names match the original TS bgm-generator.ts
@@ -183,7 +185,7 @@ pub struct BgmData {
     pub channels: Vec<Channel>, // up to 4 channels
 }
 
-#[allow(dead_code)]
+#[cfg(not(pyxel_core))]
 impl GeneratorParams {
     pub fn to_json(&self) -> String {
         serde_json::to_string(self).expect("GeneratorParams serialization failed")
@@ -193,7 +195,7 @@ impl GeneratorParams {
     }
 }
 
-#[allow(dead_code)]
+#[cfg(not(pyxel_core))]
 impl BgmData {
     pub fn to_json(&self) -> String {
         serde_json::to_string(self).expect("BgmData serialization failed")
@@ -1736,21 +1738,19 @@ pub fn generate_bgm_mml(
     compile_to_mml(&data)
 }
 
-// Get preset parameters as JSON string (for composer WASM)
-#[allow(dead_code)]
+// JSON interface for composer WASM
+#[cfg(not(pyxel_core))]
 pub fn preset_params_json(preset: i32) -> String {
     preset_params(preset).to_json()
 }
 
-// Generate BGM data from parameters JSON + seed, return `BgmData` as JSON (for composer WASM)
-#[allow(dead_code)]
+#[cfg(not(pyxel_core))]
 pub fn generate_bgm_json(params_json: &str, seed: Option<u64>) -> String {
     let params = GeneratorParams::from_json(params_json);
     generate_bgm(&params, seed).to_json()
 }
 
-// Compile `BgmData` JSON to MML strings JSON (for composer WASM)
-#[allow(dead_code)]
+#[cfg(not(pyxel_core))]
 pub fn compile_to_mml_json(bgm_json: &str) -> String {
     let data = BgmData::from_json(bgm_json);
     serde_json::to_string(&compile_to_mml(&data)).expect("MML serialization failed")
@@ -1951,6 +1951,7 @@ fn compile_to_mml(data: &BgmData) -> Vec<String> {
         .collect()
 }
 
+#[cfg(pyxel_core)]
 impl Pyxel {
     pub fn gen_bgm(
         &mut self,
@@ -1997,39 +1998,6 @@ mod tests {
         assert_eq!(p.speed, 216); // preset 0
         let p = preset_params(99);
         assert_eq!(p.speed, 168); // preset 7
-    }
-
-    #[test]
-    fn test_bgm_data_json_roundtrip() {
-        let data = BgmData {
-            tempo: 133,
-            tones: vec![Tone {
-                wave: 0,
-                attack: 0,
-                decay: 0,
-                sustain: 100,
-                release: 0,
-                vibrato: 0,
-                drum_notes: vec![],
-            }],
-            channels: vec![Channel {
-                notes: vec![Some(24), None, Some(-1), Some(36)],
-                tones: vec![Some(0), None, None, None],
-                volumes: vec![Some(96), None, None, None],
-                quantizes: vec![Some(88), None, None, None],
-            }],
-        };
-        let json = data.to_json();
-        let restored = BgmData::from_json(&json);
-        assert_eq!(data, restored);
-    }
-
-    #[test]
-    fn test_generator_params_json_roundtrip() {
-        let params = preset_params(0);
-        let json = params.to_json();
-        let restored = GeneratorParams::from_json(&json);
-        assert_eq!(params, restored);
     }
 
     #[test]
@@ -2090,14 +2058,42 @@ mod tests {
         }
     }
 
+    #[cfg(not(pyxel_core))]
     #[test]
-    fn test_preset_params_json() {
-        let json = preset_params_json(0);
-        let params: GeneratorParams = serde_json::from_str(&json).unwrap();
-        assert_eq!(params.speed, 216);
-        assert_eq!(params.chord, 0);
+    fn test_bgm_data_json_roundtrip() {
+        let data = BgmData {
+            tempo: 133,
+            tones: vec![Tone {
+                wave: 0,
+                attack: 0,
+                decay: 0,
+                sustain: 100,
+                release: 0,
+                vibrato: 0,
+                drum_notes: vec![],
+            }],
+            channels: vec![Channel {
+                notes: vec![Some(24), None, Some(-1), Some(36)],
+                tones: vec![Some(0), None, None, None],
+                volumes: vec![Some(96), None, None, None],
+                quantizes: vec![Some(88), None, None, None],
+            }],
+        };
+        let json = data.to_json();
+        let restored = BgmData::from_json(&json);
+        assert_eq!(data, restored);
     }
 
+    #[cfg(not(pyxel_core))]
+    #[test]
+    fn test_generator_params_json_roundtrip() {
+        let params = preset_params(0);
+        let json = params.to_json();
+        let restored = GeneratorParams::from_json(&json);
+        assert_eq!(params, restored);
+    }
+
+    #[cfg(not(pyxel_core))]
     #[test]
     fn test_json_pipeline_matches_direct() {
         let params_json = preset_params_json(0);
