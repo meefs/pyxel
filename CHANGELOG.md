@@ -4,6 +4,7 @@
 
 - Changed transp, instr, and seed of the gen_bgm function to required
 - Added Cargo.lock to version control for reproducible builds
+- Added the resize function to change the screen size at runtime
 
 ## 2.8.10
 
@@ -99,8 +100,8 @@
 
 ## 2.7.12
 
-- Added channel count info to gen_bgm function instr descriptions
-- Added preset mood descriptions to gen_bgm function API reference
+- Added channel count info to the gen_bgm function instr descriptions
+- Added preset mood descriptions to the gen_bgm function API reference
 - Fixed quit causing fatal error on web
 
 ## 2.7.11
@@ -124,7 +125,7 @@
 - Fixed inconsistent naming and return types in Rust and Python
 - Added console.error output for WASM runtime errors
 - Added Example 19 for perspective rendering
-- Added blt3d and bltm3d functions for pseudo-3D perspective rendering
+- Added the blt3d and bltm3d functions for pseudo-3D perspective rendering
 - Updated glow crate to version 0.17
 
 ## 2.7.7
@@ -219,8 +220,8 @@
 ## 2.6.5
 
 - Removed unnecessary files to reduce the wheel size
-- Added gen_bgm function for automatic BGM generation and playback
-- Added clamp function
+- Added the gen_bgm function for automatic BGM generation and playback
+- Added the clamp function
 - Added the collide method to Tilemap
 - Updated Examples 10 and 15 to use collide
 - Updated the sgn function to preserve input types in Python
@@ -292,7 +293,7 @@
 
 ## 2.5.9
 
-- Added load_pal and save_pal functions
+- Added the load_pal and save_pal functions
 - Enabled palette file download for new files in Pyxel Editor
 - Enabled automatic color picker size adjustment in Pyxel Editor
 - Updated Pyodide to version 0.28.3
@@ -367,7 +368,7 @@
 
 - Refactored the platform abstraction layer
 - Reduced error output in the web version
-- Added reset function
+- Added the reset function
 - Added automatic use of old_mml when '~' is used
 - Fixed delayed sound playback on Android browsers
 
@@ -446,7 +447,7 @@
 - Renamed the waveform field of Tone to wavetable
 - Updated the play and playm functions to use sec instead of tick
 - Updated the play_pos function to return sec instead of note_no
-- Updated Sound and Music save methods to use sec instead of count
+- Updated the save methods of Sound and Music to use sec instead of count
 - Added the total_sec method to Sound
 - Updated the mml method of Sound to use the new MML syntax
 - Added the old_mml method to Sound for the old MML syntax
@@ -619,8 +620,8 @@
 ## 2.2.7
 
 - Updated Pyodide to version 0.26.3
-- Added perf_monitor function
-- Added integer_scale function
+- Added the perf_monitor function
+- Added the integer_scale function
 - Renamed argument of the fullscreen function
 - Added integer-scale toggle feature with Alt(Option)+8
 - Added gamepad shortcuts using A+B+X+Y+DL/DR/DU/DD
@@ -629,7 +630,7 @@
 ## 2.2.6
 
 - Renamed WORKING_DIR to BASE_DIR
-- Added user_data_dir function
+- Added the user_data_dir function
 - Switched from the platform-dir crate to the directories crate
 - Updated glow crate to version 0.15
 - Fully revised the translations of all README files
@@ -651,8 +652,8 @@
 
 - Updated description of Pyxel's features in the README files
 - Ensured that the metadata is in UTF-8 format
-- Added pyxel.cli.get_pyxel_app_metadata function
-- Added pyxel.cli.print_pyxel_app_metadata function
+- Added the pyxel.cli.get_pyxel_app_metadata function
+- Added the pyxel.cli.print_pyxel_app_metadata function
 - Fixed a warning on macOS Sonoma
 - Fixed new clippy warnings
 
@@ -749,7 +750,7 @@
 
 - Fixed a help message in Pyxel Editor
 - Added a resume option to the play function
-- Updated function notation in Example 4
+- Updated the function notation in Example 4
 - Updated Example 9 to use the resume option for SFX playback
 - Added descriptions of the resume option to the README files
 - Updated Pyodide to version 0.26.1
@@ -853,10 +854,10 @@
 - Updated Pyodide to version 0.24.1
 - Updated Emscripten to version 3.1.45
 - Updated SDL2 to version 2.24.2
-- Added screen_mode function to change screen rendering type
+- Added the screen_mode function to change the screen rendering type
 - Added a shortcut to change the screen mode with Alt(Option)+9
 - Added support for the third and fourth gamepads
-- Added dither function to set dithering type
+- Added the dither function to set the dithering type
 - Added images, tilemaps as system lists
 - Marked the image and tilemap functions as deprecated functions
 - Added channels, sounds, and musics as system lists
