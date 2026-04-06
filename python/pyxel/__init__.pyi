@@ -1451,6 +1451,15 @@ def fullscreen(enabled: bool) -> None:
     """
     ...
 
+def resize(width: int, height: int) -> None:
+    """Change the screen size at runtime.
+
+    Args:
+        width: New screen width in pixels
+        height: New screen height in pixels
+    """
+    ...
+
 # Resource
 def load(
     filename: str,

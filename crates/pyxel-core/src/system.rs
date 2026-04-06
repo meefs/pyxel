@@ -1,5 +1,6 @@
 use std::ptr;
 
+use crate::canvas::Canvas;
 use crate::image::{rgb_to_rgb8, Color, Image};
 use crate::key::{
     Key, GAMEPAD1_BUTTON_A, GAMEPAD1_BUTTON_B, GAMEPAD1_BUTTON_DPAD_DOWN,
@@ -246,6 +247,28 @@ impl Pyxel {
         }
 
         platform::set_fullscreen(enabled);
+    }
+
+    pub fn set_screen_size(&mut self, width: u32, height: u32) {
+        assert!(
+            width > 0 && height > 0,
+            "width and height must be greater than 0"
+        );
+
+        *pyxel::width() = width;
+        *pyxel::height() = height;
+
+        pyxel::screen().canvas = Canvas::new(width, height);
+
+        if let Some(graphics) = &mut self.graphics {
+            graphics.invalidate_screen_texture();
+        }
+
+        self.reset_screencast();
+
+        if !*pyxel::is_headless() {
+            self.update_screen_params();
+        }
     }
 
     fn process_events(&mut self) {

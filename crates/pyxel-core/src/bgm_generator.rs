@@ -2018,7 +2018,7 @@ mod tests {
     #[test]
     fn test_compile_generate_bgm_produces_valid_mml() {
         let params = preset_params(0);
-        let data = generate_bgm(&params, Some(42));
+        let data = generate_bgm(&params, 42);
         let mml = compile_to_mml(&data);
         assert_eq!(mml.len(), 4);
         for (i, s) in mml.iter().enumerate() {

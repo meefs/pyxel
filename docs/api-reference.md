@@ -95,6 +95,15 @@ Set whether to run in fullscreen mode.
 
 - `enabled` (*bool*) — Enable fullscreen
 
+### `resize(width, height)` — function *(Advanced)*
+
+Change the screen size at runtime.
+
+**Parameters:**
+
+- `width` (*int*) — New screen width in pixels
+- `height` (*int*) — New screen height in pixels
+
 ### `screen_mode(scr)` — function *(Advanced)*
 
 Set the screen mode (0: crisp, 1: smooth, 2: retro).
