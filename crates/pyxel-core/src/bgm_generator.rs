@@ -1186,7 +1186,7 @@ fn generate_melody(
     rng: &mut Xoshiro256StarStar,
     require_tones: bool,
 ) -> (Vec<Option<i32>>, Vec<Option<i32>>) {
-    let density = density.clamp(0, 4) as usize;
+    let density = density as usize;
     let chord_plan = build_melody_chord_plan(chord, key_shift, lowest);
     loop {
         let mut note_line = vec![NOTE_UNSET; TOTAL_STEPS];
@@ -1804,7 +1804,31 @@ fn build_tone(idx: usize) -> Tone {
 }
 
 fn generate_bgm(params: &GeneratorParams, seed: u64) -> BgmData {
-    let instr = params.instrumentation.clamp(0, 3) as usize;
+    assert!((-5..=5).contains(&params.transpose), "invalid transpose");
+    assert!(
+        (0..=3).contains(&params.instrumentation),
+        "invalid instrumentation"
+    );
+    assert!(params.speed >= 1, "invalid speed");
+    assert!((0..8).contains(&params.chord), "invalid chord");
+    assert!((0..8).contains(&params.base), "invalid base");
+    assert!(
+        (12..=15).contains(&params.base_quantize),
+        "invalid base_quantize"
+    );
+    assert!((0..8).contains(&params.drums), "invalid drums");
+    assert!((0..6).contains(&params.melo_tone), "invalid melo_tone");
+    assert!((0..6).contains(&params.sub_tone), "invalid sub_tone");
+    assert!(
+        (28..=33).contains(&params.melo_lowest_note),
+        "invalid melo_lowest_note"
+    );
+    assert!(
+        (0..=4).contains(&params.melo_density),
+        "invalid melo_density"
+    );
+
+    let instr = params.instrumentation as usize;
     let key_shift = params.transpose;
     let speed = params.speed.max(1);
     let tempo = (28800 / speed).max(1);
@@ -1863,7 +1887,7 @@ fn generate_bgm(params: &GeneratorParams, seed: u64) -> BgmData {
     let (melody, _) = melody_and_seed;
     let melo_tone_idx = TONE_CANDIDATES[params.melo_tone as usize] as i32;
     let sub_tone_idx = TONE_CANDIDATES[params.sub_tone as usize] as i32;
-    let base_quantize = ((params.base_quantize.clamp(0, 16) * 100) + 8) / 16;
+    let base_quantize = ((params.base_quantize * 100) + 8) / 16;
 
     // Build 4 channels based on instrumentation
     let ch0 = make_channel(melody.clone(), melo_tone_idx, 96, 88);
