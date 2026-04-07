@@ -2,6 +2,7 @@
 
 ## 2.9.0
 
+- Redesigned gen_bgm for Pyxel Composer integration
 - Changed transp, instr, and seed of the gen_bgm function to required
 - Added Cargo.lock to version control for reproducible builds
 - Added the resize function to change the screen size at runtime
