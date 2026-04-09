@@ -6,6 +6,8 @@
 - Changed transp, instr, and seed of the gen_bgm function to required
 - Added Cargo.lock to version control for reproducible builds
 - Added the resize function to change the screen size at runtime
+- Fixed the screencast function using wrong last-frame delay on frame drops
+- Raised minimum Python version to 3.10
 
 ## 2.8.10
 
