@@ -2,7 +2,7 @@
 
 ## 2.9.8
 
-- Updated Rust to version nightly-2026-07-13
+- Updated Rust to version nightly-2026-07-14
 - Updated glow crate to version 0.18
 - Updated GitHub Actions dependencies and wheel verification workflow
 - Fixed malformed resource and inline data causing crashes or partial updates
