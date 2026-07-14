@@ -32,7 +32,7 @@
 - Fixed FFmpeg failures being reported as successful saves
 - Improved transformed tilemap and audio command performance
 - Improved wavetable and PyO3 data access performance
-- Improved sound attack sharpness by shortening gain interpolation
+- Improved synthesized note transitions and attack sharpness
 
 ## 2.9.7
 
